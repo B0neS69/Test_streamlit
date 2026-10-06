@@ -14,7 +14,7 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="expanded"
 )
-
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 # 2. Кешоване завантаження моделі та препроцесора
 @st.cache_resource
 def load_artifacts():
