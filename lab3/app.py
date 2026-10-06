@@ -20,16 +20,27 @@ st.set_page_config(
 def load_artifacts():
     """
     Завантажує натреновану Keras-модель та scikit-learn препроцесор.
-    Кешування запобігає повторному читанню дисків під час кожної взаємодії.
+    Перевіряє як папку скрипта (lab3), так і поточну робочу директорію.
     """
-    model_path = "ny_house_price_model.keras"
-    preprocessor_path = "ny_house_preprocessor.pkl"
+    # 1. Перевірка шляху всередині папки скрипта
+    model_path = os.path.join(BASE_DIR, "ny_house_price_model.keras")
+    preprocessor_path = os.path.join(BASE_DIR, "ny_house_preprocessor.pkl")
+
+    # 2. Якщо не знайдено, перевіряємо поточну директорію запуску
+    if not os.path.exists(model_path):
+        model_path = "ny_house_price_model.keras"
+    if not os.path.exists(preprocessor_path):
+        preprocessor_path = "ny_house_preprocessor.pkl"
 
     if not os.path.exists(model_path) or not os.path.exists(preprocessor_path):
         st.error(
-            f"Не знайдено необхідних файлів артефактів: "
-            f"'{model_path}' або '{preprocessor_path}'. "
-            f"Переконайтеся, що вони розташовані в кореневій папці проєкту."
+            f"❌ Не знайдено файли артефактів моделі!\n\n"
+            f"- Шукали за шляхом: `{os.path.join(BASE_DIR, 'ny_house_price_model.keras')}`\n"
+            f"- Поточна робоча папка: `{os.getcwd()}`\n\n"
+            f"**Як виправити:**\n"
+            f"1. Переконайтеся, що файли `ny_house_price_model.keras` та `ny_house_preprocessor.pkl` "
+            f"завантажені на GitHub у папку `lab3/` (перевірте, чи вони не заблоковані у `.gitignore`).\n"
+            f"2. Зробіть `git add`, `git commit` та `git push` цих двох файлів."
         )
         st.stop()
 
